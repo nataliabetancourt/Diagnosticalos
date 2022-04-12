@@ -95,11 +95,13 @@ class StartScreens {
             this.screen = 1;
         }
 
+        //Continue button to switch to instructions screen
         if (this.mouse(885, 1135, 565, 640) && this.screen === 1) {
             this.screen = 2;
             this.btnCounter = 0;
         }
 
+        //Continue button to switch to symptoms screen
         if (this.mouse(885, 1135, 565, 640) && this.screen === 2) {
             this.btnCounter = 0;
             this.screenSwitch++;

@@ -1,5 +1,6 @@
 //Classes
 let introScreens;
+let symptomsScreen;
 
 //Variables
 let screen;
@@ -9,9 +10,10 @@ function setup() {
 
   //Calling classes
   introScreens = new StartScreens();
+  symptomsScreen = new SymptomsScreen();
 
   //Variables
-  this.screen = 0;
+  this.screen = 1;
 }
 
 function draw() {
@@ -26,12 +28,12 @@ function draw() {
       break;
     //Symptoms screen
     case 1:
-      
+      symptomsScreen.draw();
       break;
   }
 
+  //Check for changes in classes
   switchBetweenClasses();
-  
 }
 
 function mousePressed() {
@@ -40,8 +42,12 @@ function mousePressed() {
     case 0:
       introScreens.clicked();
       break;
+    //Symptoms screen clicks
     case 1:
-      
+      symptomsScreen.clicked();
+      break;
+    case 2:
+
       break;
   }
 
@@ -51,6 +57,11 @@ function switchBetweenClasses() {
   //Start screen to symptoms
   if (introScreens.getScreenClicked()) {
     this.screen = 1;
+  }
+
+  //Symptoms screen to level screen
+  if (symptomsScreen.getContinueClicked()) {
+    this.screen = 2;
   }
 }
 
