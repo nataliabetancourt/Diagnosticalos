@@ -86,9 +86,9 @@ class PatientLevelOne {
                 
                 //Add points
                 this.score += this.questions[index].getPoints();
-                
-                //Remove question
-                this.questions.splice(index, 1);
+
+                //Hide question
+                this.questions[index].setClick(true);
             }
         }
 
@@ -100,6 +100,12 @@ class PatientLevelOne {
         //When clicking on symptoms book
         if (dist(mouseX, mouseY, 1205, 200) < 100) {
             this.clickBook = true;
+        }
+    }
+
+    automaticDiagnosis() {
+        if (this.questions.length < 1) {
+            this.clickDiagnosis = true;
         }
     }
 

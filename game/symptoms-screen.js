@@ -65,7 +65,7 @@ class SymptomsScreen {
         }
 
         //Close button
-        image(this.closeBtn, 1180, 40, 40, 40);
+        image(this.closeBtn, 45, 40, 40, 40);
     }
 
     //Animation for continue button
@@ -106,10 +106,9 @@ class SymptomsScreen {
         this.arrows(2, 0, 1);
 
         //Close button clicked
-        if (mouseX > 1180 && mouseX < 1220 && mouseY > 40 && mouseY < 80) {
+        if (mouseX > 45 && mouseX < 95 && mouseY > 40 && mouseY < 80) {
             this.closeClicked = true;
         }
-        
     }
 
     arrows(onScreen, rightScreen, leftScreen) {

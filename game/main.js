@@ -68,7 +68,7 @@ function draw() {
       break;
     //Patients on level 2
     case 5:
-
+      
       break;
     //Level 3 screen
     case 6:
@@ -105,7 +105,6 @@ function mousePressed() {
       diagnosisScreen.clicked();
       break;
   }
-
 }
 
 function switchBetweenClasses() {
@@ -125,7 +124,7 @@ function switchBetweenClasses() {
     this.screen = 3;
   }
   
-  if (this.changeCounter2 > 100 && this.screen === 4) {
+  if (this.changeCounter2 > 100) {
     this.screen = 5;
   }
 
@@ -136,7 +135,7 @@ function switchBetweenClasses() {
 
   //DIAGNOSIS FROM GAME
   //Make diagnosis during game
-  if (patientOne.isClickDiagnosis()) {
+  if (patientOne.isClickDiagnosis() && this.book == false) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(4);
   }

@@ -11,11 +11,16 @@ class Question {
 
         //Loading question image
         this.img = loadImage(img);
+
+        //If clicked, hide
+        this.click = false;
     }
 
     draw() {
         //Question image
-        image(this.img, this.x, this.y, this.width, this.height);
+        if (this.click == false) {
+            image(this.img, this.x, this.y, this.width, this.height);
+        }
     }
 
     clicked() {
@@ -28,5 +33,9 @@ class Question {
 
     getPoints() {
         return this.points;
+    }
+
+    setClick(click) {
+        this.click = click;
     }
 }
