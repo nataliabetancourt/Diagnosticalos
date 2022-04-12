@@ -16,6 +16,8 @@ class SymptomsScreen {
         this.showBtn = false;
         this.btnCounter = 0;
         this.continueClicked = false;
+        this.wBtn = 180;
+        this.hBtn = 60;
     }
 
     draw() {
@@ -35,7 +37,20 @@ class SymptomsScreen {
         //Show continue button, regardless of screen, after a couple of seconds
         this.btnCounter++;
         if (this.btnCounter > 300) {
-            image(this.continueBtn, 1085, 640, 180, 60);
+            image(this.continueBtn, 1085, 640, this.wBtn, this.hBtn);
+        }
+
+        this.hover();
+    }
+
+    //Animation for continue button
+    hover() {
+        if (mouseX > 1085 && mouseX < 1265 && mouseY > 640 && mouseY < 700 && this.btnCounter > 300) {
+            this.wBtn = 190;
+            this.hBtn = 65;
+        } else {
+            this.wBtn = 180;
+            this.hBtn = 60;
         }
     }
 

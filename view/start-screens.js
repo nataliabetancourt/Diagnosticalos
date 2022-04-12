@@ -56,6 +56,8 @@ class StartScreens {
                 }
                 break;
         }
+
+        this.hover();
     }
 
     //Animation, kinda
