@@ -30,6 +30,7 @@ class PatientLevelOne {
         this.chosenQ;
         this.clickBook = false;
         this.clickDiagnosis = false;
+        this.score = 0;
     }
 
     draw() {
@@ -53,6 +54,14 @@ class PatientLevelOne {
         image(this.bookBtn, 1205, 200, this.sides2, this.sides2);
         this.hover();
 
+        //Drawing score
+        fill(255);
+        rect(640, 25, 180, 75, 10);
+        noStroke();
+        fill(72, 72, 72);
+        textSize(16);
+        text('PUNTAJE: ' + this.score, 655, 55);
+        text('TIEMPO: ', 655, 85);
     }
 
     hover() {
@@ -73,7 +82,10 @@ class PatientLevelOne {
             if (this.questions[index].clicked()) {
                 //Make sure that the index variable isnt null and then asign value
                 this.firstClick = true;
-                this.chosenQ = index;       
+                this.chosenQ = index; 
+                
+                //Add points
+                this.score += this.questions[index].getPoints();
                 
                 //Remove question
                 this.questions.splice(index, 1);

@@ -21,7 +21,7 @@ function setup() {
   diagnosisScreen = new DiagnosisScreen();
 
   //Variables
-  this.screen = 0;
+  this.screen = 3;
   this.changeCounter = 0;
   this.changeCounter2 = 0;
   this.changeCounter3 = 0;
@@ -124,8 +124,7 @@ function switchBetweenClasses() {
   if (this.changeCounter > 100 && this.screen === 2) {
     this.screen = 3;
   }
-
-  //Switch to next level after a couple of seconds
+  
   if (this.changeCounter2 > 100 && this.screen === 4) {
     this.screen = 5;
   }

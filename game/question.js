@@ -25,4 +25,8 @@ class Question {
             return false;
         }
     }
+
+    getPoints() {
+        return this.points;
+    }
 }
