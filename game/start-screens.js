@@ -31,6 +31,7 @@ class StartScreens {
     }
 
     draw(){
+        imageMode(CORNER);
         //Transition between screens
         switch (this.screen) {
             case 0:
@@ -123,7 +124,7 @@ class StartScreens {
         }
     }
 
-    getScreenClicked() {
+    isScreenClicked() {
         return this.screenClicked;
     }
 }

@@ -18,9 +18,14 @@ class SymptomsScreen {
         this.continueClicked = false;
         this.wBtn = 180;
         this.hBtn = 60;
+
+        //Close button
+        this.closeBtn = loadImage('../images/close.png');
+        this.closeClicked = false;
     }
 
     draw() {
+        imageMode(CORNER);
         //Transitioning between book pages
         switch (this.screen) {
             case 0:
@@ -41,6 +46,26 @@ class SymptomsScreen {
         }
 
         this.hover();
+    }
+
+    //Showing book during game play
+    drawPlay() {
+        imageMode(CORNER);
+        //Transitioning between book pages
+        switch (this.screen) {
+            case 0:
+                image(this.page1, 0, 0, 1280, 720);
+                break;
+            case 1:
+                image(this.page2, 0, 0, 1280, 720);
+                break;
+            case 2:
+                image(this.page3, 0, 0, 1280, 720);
+                break;
+        }
+
+        //Close button
+        image(this.closeBtn, 1180, 40, 40, 40);
     }
 
     //Animation for continue button
@@ -70,6 +95,23 @@ class SymptomsScreen {
         }
     }
 
+    clickedPlay() {
+        //Arrows page 1
+        this.arrows(0, 1, 2);
+
+        //Arrows page 2
+        this.arrows(1, 2, 0);
+
+        //Arrows page 3
+        this.arrows(2, 0, 1);
+
+        //Close button clicked
+        if (mouseX > 1180 && mouseX < 1220 && mouseY > 40 && mouseY < 80) {
+            this.closeClicked = true;
+        }
+        
+    }
+
     arrows(onScreen, rightScreen, leftScreen) {
         //Right arrow
         if (dist(mouseX, mouseY, 980, 605) < 40 && this.screen === onScreen) {
@@ -90,7 +132,11 @@ class SymptomsScreen {
         }
     }
 
-    getContinueClicked() {
+    isContinueClicked() {
         return this.continueClicked;
+    }
+
+    isCloseClicked() {
+        return this.closeClicked;
     }
 }
