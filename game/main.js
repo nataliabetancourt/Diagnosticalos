@@ -13,6 +13,8 @@ let patientsLevel2;
 let patientsLevel3;
 let score;
 
+
+
 //Level images
 let level1, level2, level3;
 
@@ -41,6 +43,7 @@ function setup() {
   level2 = loadImage('../images/level2.jpg');
   level3 = loadImage('../images/level3.jpg');
 
+  
 }
 
 function draw() {
@@ -53,6 +56,7 @@ function draw() {
     case 0:
       //introScreens.draw();
       patientOne.draw();
+      this.timer();
       break;
     //Symptoms screen
     case 1:
@@ -134,6 +138,37 @@ function draw() {
   diagnosisScreens();
   showBookPlay();
 }
+
+function timer() {
+
+  this.totalTime = millis(); //start timer
+  this.timeLimit = 10; //time limit 5min
+  this.gameTime = 0; // amount of time playing
+  this.end = false;
+
+  gameTime = int(totalTime/ 1000); //convert to seconds and int
+  
+
+  fill(72, 72, 72)
+  textSize(18);
+  text(convertSeconds(timeLimit - gameTime), 725, 85);
+
+}
+
+function convertSeconds(s) {
+  let min = floor(s / 60);
+  let sec = s % 60;
+  return nf(min, 2) + ':' + nf(sec, 2);
+}
+
+function timeIt() {
+  gameTime = int((millis() - totalTime) / 1000); //convert to seconds and int
+  if (gameTime > 30) {
+    end = true; //Signal the rest of the code to end the timer
+  }
+  return gameTime; //stop running this function once the timer reaches 30
+}
+
 
 function mousePressed() {
   switch (this.screen) {
@@ -286,3 +321,5 @@ function showBook(){
 function addScore() {
   
 }
+
+

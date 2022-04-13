@@ -66,32 +66,9 @@ class PatientLevelOne {
         text('PUNTAJE: ' + this.score, 655, 55);
         text('TIEMPO: ', 655, 85);
 
-        this.timer();
     }
 
-    timer() {
-
-        let totalTime = millis(); //start timer
-        let timeLimit = 300; //time limit 5min
-        let gameTime ; // amount of time playing
-   
-        gameTime = int(totalTime/ 1000) //convert to seconds and int
-
-        //graphics
-        fill(72, 72, 72)
-        textSize(18);
-
-        text(this.convertSeconds(timeLimit - gameTime), 725, 85);
-
-        
-
-      }
-      
-    convertSeconds(s) { //convert to min:sec
-        let min = floor(s / 60);
-        let sec = s % 60;
-        return nf(min, 2) + ':' + nf(sec, 2);
-    }
+    
 
     hover() {
         //Diagnosis button
