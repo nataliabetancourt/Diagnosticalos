@@ -142,16 +142,23 @@ function draw() {
 function timer() {
 
   this.totalTime = millis(); //start timer
-  this.timeLimit = 10; //time limit 5min
-  this.gameTime = 0; // amount of time playing
+  this.timeLimit = 3; //time limit 5min
+  this.gameTime; // amount of time playing
   this.end = false;
 
   gameTime = int(totalTime/ 1000); //convert to seconds and int
   
+  //interval = setInterval(timeIt, 1000);
 
   fill(72, 72, 72)
   textSize(18);
   text(convertSeconds(timeLimit - gameTime), 725, 85);
+  
+  if ((timeLimit - gameTime) == 0) { //he rest of the code to end the timer
+    this.screen = 8;
+  
+  }
+  
 
 }
 
@@ -162,11 +169,12 @@ function convertSeconds(s) {
 }
 
 function timeIt() {
-  gameTime = int((millis() - totalTime) / 1000); //convert to seconds and int
-  if (gameTime > 30) {
-    end = true; //Signal the rest of the code to end the timer
+  //gameTime = int( totalTime/ 1000); //convert to seconds and int
+  if (gameTime > 0) {
+    console.log('STOPPP')
+    gameTime = 0; //Signal the rest of the code to end the timer
   }
-  return gameTime; //stop running this function once the timer reaches 30
+  return gameTime; //stop running this function once the timer reaches 0
 }
 
 
@@ -321,5 +329,3 @@ function showBook(){
 function addScore() {
   
 }
-
-
