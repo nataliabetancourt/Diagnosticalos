@@ -2,6 +2,7 @@
 let introScreens;
 let symptomsScreen;
 let patientOne;
+let patientTwo;
 let diagnosisScreen;
 
 //Variables
@@ -18,10 +19,11 @@ function setup() {
   introScreens = new StartScreens();
   symptomsScreen = new SymptomsScreen();
   patientOne = new PatientLevelOne();
+  patientTwo = new PatientLevelTwo();
   diagnosisScreen = new DiagnosisScreen();
 
   //Variables
-  this.screen = 3;
+  this.screen = 5;
   this.changeCounter = 0;
   this.changeCounter2 = 0;
   this.changeCounter3 = 0;
@@ -68,7 +70,11 @@ function draw() {
       break;
     //Patients on level 2
     case 5:
-      
+      //Doctors office
+      patientTwo.draw();
+
+      //Book
+      showBook();
       break;
     //Level 3 screen
     case 6:
@@ -100,6 +106,9 @@ function mousePressed() {
     case 3:
       patientOne.clicked();
       symptomsScreen.clickedPlay();
+      break;
+    case 5:
+      patientTwo.clicked();
       break;
     case 8:
       diagnosisScreen.clicked();
@@ -138,6 +147,19 @@ function switchBetweenClasses() {
   if (patientOne.isClickDiagnosis() && this.book == false) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(4);
+  }
+
+  //Check if clicked for first patient
+  if (patientTwo.isClickDiagnosis() == 1 && this.book == false) {
+    this.screen = 8;
+    patientTwo.setPatient(1);
+    diagnosisScreen.setNextScreen(5);
+  }
+
+  //Check if clicked for second patient
+  if (patientTwo.isClickDiagnosis() > 2 && this.book == false) {
+    this.screen = 8;
+    diagnosisScreen.setNextScreen(6);
   }
 
   //SHOWING BOOK DURING GAME

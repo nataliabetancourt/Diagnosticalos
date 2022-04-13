@@ -103,11 +103,6 @@ class PatientLevelOne {
         }
     }
 
-    automaticDiagnosis() {
-        if (this.questions.length < 1) {
-            this.clickDiagnosis = true;
-        }
-    }
 
     isClickBook() {
         return this.clickBook;
