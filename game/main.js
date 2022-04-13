@@ -51,7 +51,8 @@ function draw() {
   switch (this.screen) {
     //Start screens
     case 0:
-      introScreens.draw();
+      //introScreens.draw();
+      patientOne.draw();
       break;
     //Symptoms screen
     case 1:
