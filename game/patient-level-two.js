@@ -4,9 +4,6 @@ class PatientLevelTwo {
         this.patient2 = loadImage('../images/patient2.jpg');
         this.patient3 = loadImage('../images/patient3.jpg');
 
-        //Patients variable
-        this.patient = 0;
-
         //Questions patient 1
         this.questions1 = [];
         //Add question to list
@@ -15,7 +12,7 @@ class PatientLevelTwo {
         this.questions1.push(new Question(541, 63, '../images/level2/question3.png', 5));
         this.questions1.push(new Question(606, 63, '../images/level2/question4.png', 0));
 
-        //Questions patient 1
+        //Questions patient 2
         this.questions2 = [];
         //Questions patient 2
         this.questions2.push(new Question(404, 63, '../images/level2/question5.png', 0));
@@ -53,41 +50,35 @@ class PatientLevelTwo {
         this.clickBook = false;
         this.clickDiagnosis = 0;
         this.score = 0;
-        this.patient1Checked = false;
-        this.patientsChecked = false;
+    }
+
+    //Summarize all drawing processes
+    drawingSum(img, questions, answers, click, chosen) {
+        imageMode(CORNER);
+        image(img, 0, 0, 1280, 720);
+
+        //Draw questions
+        for (let index = 0; index < questions.length; index++) {
+            questions[index].draw();
+        }
+
+        //Draw answers to those questions
+        if (click) {
+            answers[chosen].draw();
+        }
+    }
+
+    //Draw everything for patient1
+    drawPatient1() {
+        this.drawingSum(this.patient2, this.questions1, this.answers1, this.firstClick, this.chosenQ);
+    }
+
+    drawPatient2() {
+        this.drawingSum(this.patient3, this.questions2, this.answers2, this.firstClick2, this.chosenQ2);
     }
 
     draw(){
         imageMode(CORNER);
-        //Transitioning between patients
-        switch (this.patient) {
-            case 0:
-                image(this.patient2, 0, 0, 1280, 720);
-
-                //Draw questions
-                for (let index = 0; index < this.questions1.length; index++) {
-                     this.questions1[index].draw();    
-                }
-
-                //Draw answers
-                if (this.firstClick) {
-                    this.answers1[this.chosenQ].draw(); 
-                }
-                break;
-            case 1:
-                image(this.patient3, 0, 0, 1280, 720);
-
-                //Draw questions
-                for (let index = 0; index < this.questions2.length; index++) {
-                    this.questions2[index].draw();    
-               }
-
-               //Draw answers
-               if (this.firstClick2) {
-                   this.answers2[this.chosenQ2].draw(); 
-               }
-                break;
-        }
 
         //Drawing buttons
         imageMode(CENTER);
@@ -103,7 +94,6 @@ class PatientLevelTwo {
         textSize(16);
         text('PUNTAJE: ' + this.score, 655, 55);
         text('TIEMPO: ', 655, 85);
-
     }
 
     hover() {
@@ -118,42 +108,39 @@ class PatientLevelTwo {
         } else {this.sides2 = 110;}
     }
 
-    clicked() {
-        switch (this.patient) {
-            case 0:
-                //When clicking on questions patient 1
-                for (let index = 0; index < this.questions1.length; index++) {
-                    if (this.questions1[index].clicked()) {
-                        //Make sure that the index variable isnt null and then asign value
-                        this.firstClick = true;
-                        this.chosenQ = index; 
-                        
-                        //Add points
-                        this.score += this.questions1[index].getPoints();
+    clickPatient1() {
+        for (let index = 0; index < this.questions1.length; index++) {
+            if (this.questions1[index].clicked()) {
+                //Make sure that the index variable isnt null and then asign value
+                this.firstClick = true;
+                this.chosenQ = index;
 
-                        //Hide question
-                        this.questions1[index].setClick(true);
-                    }
-                } 
-                break;
-            case 1:
-                //When clicking on questions patient 2
-                for (let index = 0; index < this.questions2.length; index++) {
-                    if (this.questions2[index].clicked()) {
-                        //Make sure that the index variable isnt null and then asign value
-                        this.firstClick2 = true;
-                        this.chosenQ2 = index; 
-                        
-                        //Add points
-                        this.score += this.questions2[index].getPoints();
+                //Add points
+                this.score += this.questions1[index].getPoints();
 
-                        //Hide question
-                        this.questions2[index].setClick(true);
-                    }
-                } 
-                break;
+                //Hide question
+                this.questions1[index].setClick(true);
+            }  
         }
+    }
 
+    clickPatient2() {
+        for (let index = 0; index < this.questions2.length; index++) {
+            if (this.questions2[index].clicked()) {
+                //Make sure that the index variable isnt null and then asign value
+                this.firstClick2 = true;
+                this.chosenQ2 = index;
+
+                //Add points
+                this.score += this.questions2[index].getPoints();
+
+                //Hide question
+                this.questions2[index].setClick(true);
+            }  
+        }
+    }
+
+    clicked() {
         ///When clicking on diagnosis button
         if (dist(mouseX, mouseY, 1205, 80) < 100) {
             this.clickDiagnosis++;
@@ -173,15 +160,15 @@ class PatientLevelTwo {
         return this.clickDiagnosis;
     }
 
-    isPatientsChecked() {
-        return this.patientsChecked;
-    }
-
-    setPatient(patient) {
-        this.patient = patient;
-    }
-
     setClickDiagnosis(clickDiagnosis) {
         this.clickDiagnosis = clickDiagnosis;
+    }
+
+    getScore() {
+        return this.score;
+    }
+
+    setScore(score) {
+        this.score = score;
     }
 }

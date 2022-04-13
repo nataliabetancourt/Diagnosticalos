@@ -103,12 +103,15 @@ class PatientLevelOne {
         }
     }
 
-
     isClickBook() {
         return this.clickBook;
     }
 
     isClickDiagnosis() {
         return this.clickDiagnosis;
+    }
+
+    getScore() {
+        return this.score;
     }
 }

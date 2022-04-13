@@ -40,12 +40,16 @@ class DiagnosisScreen {
             if (this.squares[index].isClicked()) {
                 this.diagnosis.push(this.squares[index].getSickness());
                 this.answered = true;
-            }
+            } 
         }
     }
 
     isAnswered(){
         return this.answered;
+    }
+
+    setAnswered(answered) {
+        this.answered = answered;
     }
 
     setNextScreen(nextScreen) {

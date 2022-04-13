@@ -138,4 +138,8 @@ class SymptomsScreen {
     isCloseClicked() {
         return this.closeClicked;
     }
+
+    setCloseClicked(close) {
+        this.closeClicked = close;
+    }
 }
