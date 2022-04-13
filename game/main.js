@@ -159,7 +159,6 @@ function timer() {
   
   }
   
-
 }
 
 function convertSeconds(s) {
@@ -170,12 +169,12 @@ function convertSeconds(s) {
 
 function timeIt() {
   //gameTime = int( totalTime/ 1000); //convert to seconds and int
-  if (gameTime > 0) {
-    console.log('STOPPP')
-    gameTime = 0; //Signal the rest of the code to end the timer
-  }
-  return gameTime; //stop running this function once the timer reaches 0
-}
+  //gameTime = floor((millis() - timeLimit) / 1000);
+    text(convertSeconds(timeLimit - gameTime));
+    if (gameTime == timeLimit) {
+      clearInterval(interval);
+      //counter = 0;
+    }}
 
 
 function mousePressed() {
