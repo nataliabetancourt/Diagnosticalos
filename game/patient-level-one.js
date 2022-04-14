@@ -31,6 +31,9 @@ class PatientLevelOne {
         this.clickBook = false;
         this.clickDiagnosis = false;
         this.score = 0;
+
+        //timer
+        
     }
 
     draw() {
@@ -62,7 +65,10 @@ class PatientLevelOne {
         textSize(16);
         text('PUNTAJE: ' + this.score, 655, 55);
         text('TIEMPO: ', 655, 85);
+
     }
+
+    
 
     hover() {
         //Diagnosis button

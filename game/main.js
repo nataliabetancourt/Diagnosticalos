@@ -13,6 +13,8 @@ let patientsLevel2;
 let patientsLevel3;
 let score;
 
+
+
 //Level images
 let level1, level2, level3;
 
@@ -41,6 +43,7 @@ function setup() {
   level2 = loadImage('../images/level2.jpg');
   level3 = loadImage('../images/level3.jpg');
 
+  
 }
 
 function draw() {
@@ -51,7 +54,9 @@ function draw() {
   switch (this.screen) {
     //Start screens
     case 0:
-      introScreens.draw();
+      //introScreens.draw();
+      patientOne.draw();
+      this.timer();
       break;
     //Symptoms screen
     case 1:
@@ -152,6 +157,44 @@ function draw() {
   }
 
 }
+
+function timer() {
+
+  this.totalTime = millis(); //start timer
+  this.timeLimit = 3; //time limit 5min
+  this.gameTime; // amount of time playing
+  this.end = false;
+
+  gameTime = int(totalTime/ 1000); //convert to seconds and int
+  
+  //interval = setInterval(timeIt, 1000);
+
+  fill(72, 72, 72)
+  textSize(18);
+  text(convertSeconds(timeLimit - gameTime), 725, 85);
+  
+  if ((timeLimit - gameTime) == 0) { //he rest of the code to end the timer
+    this.screen = 8;
+  
+  }
+  
+}
+
+function convertSeconds(s) {
+  let min = floor(s / 60);
+  let sec = s % 60;
+  return nf(min, 2) + ':' + nf(sec, 2);
+}
+
+function timeIt() {
+  //gameTime = int( totalTime/ 1000); //convert to seconds and int
+  //gameTime = floor((millis() - timeLimit) / 1000);
+    text(convertSeconds(timeLimit - gameTime));
+    if (gameTime == timeLimit) {
+      clearInterval(interval);
+      //counter = 0;
+    }}
+
 
 function mousePressed() {
   switch (this.screen) {
