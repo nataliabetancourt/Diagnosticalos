@@ -30,7 +30,7 @@ function setup() {
   diagnosisScreen = new DiagnosisScreen();
 
   //Variables
-  this.screen = 3;
+  this.screen = 0;
   this.changeCounter = 0;
   this.changeCounter2 = 0;
   this.changeCounter3 = 0;
@@ -54,9 +54,8 @@ function draw() {
   switch (this.screen) {
     //Start screens
     case 0:
-      //introScreens.draw();
-      patientOne.draw();
-      this.timer();
+      introScreens.draw();
+      
       break;
     //Symptoms screen
     case 1:
@@ -72,7 +71,7 @@ function draw() {
     case 3:
       //Doctors office
       patientOne.draw();
-
+      this.timer();
       //Book
       showBook();
       break;
@@ -100,7 +99,7 @@ function draw() {
       }
       //General things
       patientTwo.draw();
-
+      this.timer();
       //Book
       showBook();
       break;
@@ -128,7 +127,7 @@ function draw() {
 
       //General things
       patientThree.draw();
-
+      this.timer();
       //Book
       showBook();
       break;
