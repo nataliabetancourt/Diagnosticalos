@@ -28,7 +28,7 @@ function setup() {
   diagnosisScreen = new DiagnosisScreen();
 
   //Variables
-  this.screen = 0;
+  this.screen = 3;
   this.changeCounter = 0;
   this.changeCounter2 = 0;
   this.changeCounter3 = 0;
@@ -61,6 +61,7 @@ function draw() {
     case 2:
       this.changeCounter++;
       image(level1, 0, 0, 1280, 720);
+      this.book = false;
       break;
     //Patient on level 1
     case 3:
@@ -74,6 +75,7 @@ function draw() {
     case 4:
       this.changeCounter2++;
       image(level2, 0, 0, 1280, 720);
+      this.book = false;
       break;
     //Patients on level 2
     case 5:
@@ -81,6 +83,11 @@ function draw() {
       switch (this.patientsLevel2) {
         case 0:
           patientTwo.drawPatient1();
+          /*let counter = 0;
+          counter++;
+          if (counter < 10) {
+            diagnosisScreen.setAnswered(false);
+          }*/
           break;
         case 1:
           patientTwo.drawPatient2();
@@ -96,11 +103,13 @@ function draw() {
     case 6:
       this.changeCounter3++;
       image(level3, 0, 0, 1280, 720);
+      this.book = false;
+
       break;
     //Patients on level 3
     case 7:
       //Doctors office
-      switch (this.patientsLevel2) {
+      switch (this.patientsLevel3) {
         case 0:
           patientThree.drawPatient1();
           break;
@@ -132,6 +141,16 @@ function draw() {
   levelScreens();
   diagnosisScreens();
   showBookPlay();
+
+  if (this.changeCounter2 > 100 && this.screen === 4) {
+    this.screen = 5;
+  }
+
+  //Switch to next level after a couple of seconds
+  if (this.changeCounter3 > 100 && this.screen === 6) {
+    this.screen = 7;
+  }
+
 }
 
 function mousePressed() {
@@ -146,10 +165,13 @@ function mousePressed() {
       break;
     //Patient level 1
     case 3:
-      patientOne.clicked();
+      if (this.book == false) {
+        patientOne.clicked();
+      }
       symptomsScreen.clickedPlay();
       break;
     case 5:
+      if (this.book == false) {
       switch (this.patientsLevel2) {
         case 0:
           patientTwo.clickPatient1();
@@ -158,10 +180,12 @@ function mousePressed() {
           patientTwo.clickPatient2();
           break;
       }
+    }
       patientTwo.clicked();
       symptomsScreen.clickedPlay();
       break;
     case 7:
+      if (this.book == false) {
       switch (this.patientsLevel3) {
         case 0:
           patientThree.clickPatient1();
@@ -173,6 +197,7 @@ function mousePressed() {
           patientThree.clickPatient3();
           break;
       }
+    }
       patientThree.clicked();
       symptomsScreen.clickedPlay();
       break;
@@ -201,15 +226,6 @@ function levelScreens() {
   if (this.changeCounter > 100 && this.screen === 2) {
     this.screen = 3;
   }
-  
-  if (this.changeCounter2 > 100) {
-    this.screen = 5;
-  }
-
-  //Switch to next level after a couple of seconds
-  if (this.changeCounter3 > 100 && this.screen === 6) {
-    this.screen = 7;
-  }
 }
 
 function diagnosisScreens(){
@@ -221,7 +237,7 @@ function diagnosisScreens(){
   }
 
   //For patient 1 in level 2
-  if (patientTwo.isClickDiagnosis() == 1  && this.book == false) {
+  if (patientTwo.isClickDiagnosis() == 1  && this.book == false && diagnosisScreen.isAnswered() == false) {
     this.screen = 8;
     this.patientsLevel2 = 1;
     diagnosisScreen.setNextScreen(5);
@@ -235,13 +251,13 @@ function diagnosisScreens(){
   //For patient 1 in level 3
   if (patientThree.isClickDiagnosis() == 1 && this.book == false) {
     this.screen = 8;
-    this.patientsLevel2 = 1;
+    this.patientsLevel3 = 1;
     diagnosisScreen.setNextScreen(7);
   }
 
   if (patientThree.isClickDiagnosis() == 1 && this.book == false) {
     this.screen = 8;
-    this.patientsLevel2 = 2;
+    this.patientsLevel3 = 2;
     diagnosisScreen.setNextScreen(7);
   }
 
@@ -266,7 +282,7 @@ function showBookPlay() {
     this.book = true;
   }
 
-  if (patientThree.isClickBook) {
+  if (patientThree.isClickBook()) {
     this.book = true;
   }
 
