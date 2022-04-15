@@ -12,8 +12,7 @@ let changeCounter, changeCounter2, changeCounter3;
 let patientsLevel2;
 let patientsLevel3;
 let score;
-
-
+let counter;
 
 //Level images
 let level1, level2, level3;
@@ -30,13 +29,14 @@ function setup() {
   diagnosisScreen = new DiagnosisScreen();
 
   //Variables
-  this.screen = 0;
+  this.screen = 3;
   this.changeCounter = 0;
   this.changeCounter2 = 0;
   this.changeCounter3 = 0;
   this.book = false;
   this.patientsLevel2 = 0;
   this.patientsLevel3 = 0;
+  this.counter = 0;
 
   //Loading level images
   level1 = loadImage('../images/level1.jpg');
@@ -71,7 +71,7 @@ function draw() {
     case 3:
       //Doctors office
       patientOne.draw();
-      this.timer();
+      //this.timer();
       //Book
       showBook();
       break;
@@ -87,19 +87,24 @@ function draw() {
       switch (this.patientsLevel2) {
         case 0:
           patientTwo.drawPatient1();
-          /*let counter = 0;
-          counter++;
-          if (counter < 10) {
+          this.counter++;
+          if (this.counter < 10) {
             diagnosisScreen.setAnswered(false);
-          }*/
+            this.counter = 0;
+          }
           break;
         case 1:
           patientTwo.drawPatient2();
+          this.counter++;
+          if (this.counter < 10) {
+            diagnosisScreen.setAnswered(false);
+            this.counter = 0;
+          }
           break;
       }
       //General things
       patientTwo.draw();
-      this.timer();
+      //this.timer();
       //Book
       showBook();
       break;
@@ -116,18 +121,33 @@ function draw() {
       switch (this.patientsLevel3) {
         case 0:
           patientThree.drawPatient1();
+          this.counter++;
+          if (this.counter < 10) {
+            diagnosisScreen.setAnswered(false);
+            this.counter = 0;
+          }
           break;
         case 1:
           patientThree.drawPatient2();
+          this.counter++;
+          if (this.counter < 10) {
+            diagnosisScreen.setAnswered(false);
+            this.counter = 0;
+          }
           break;
         case 2:
           patientThree.drawPatient3();
+          this.counter++;
+          if (this.counter < 10) {
+            diagnosisScreen.setAnswered(false);
+            this.counter = 0;
+          }
           break;
       }
 
       //General things
       patientThree.draw();
-      this.timer();
+      //this.timer();
       //Book
       showBook();
       break;
@@ -273,37 +293,39 @@ function levelScreens() {
 function diagnosisScreens(){
   //DIAGNOSIS FROM GAME
   //Make diagnosis during game
-  if (patientOne.isClickDiagnosis() && this.book == false) {
+  if (patientOne.isClickDiagnosis() && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 3) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(4);
   }
 
   //For patient 1 in level 2
-  if (patientTwo.isClickDiagnosis() == 1  && this.book == false && diagnosisScreen.isAnswered() == false) {
+  if (patientTwo.isClickDiagnosis() == 1  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 5 && this.patientsLevel2 == 0) {
     this.screen = 8;
     this.patientsLevel2 = 1;
     diagnosisScreen.setNextScreen(5);
   }
 
-  if (patientTwo.isClickDiagnosis() == 2  && this.book == false) {
+  if (patientTwo.isClickDiagnosis() == 2  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 5 && this.patientsLevel2 == 1) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(6);
   }
 
   //For patient 1 in level 3
-  if (patientThree.isClickDiagnosis() == 1 && this.book == false) {
+  if (patientThree.isClickDiagnosis() == 1 && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 0) {
     this.screen = 8;
     this.patientsLevel3 = 1;
     diagnosisScreen.setNextScreen(7);
   }
 
-  if (patientThree.isClickDiagnosis() == 1 && this.book == false) {
+  //For patient 2 in level 3
+  if (patientThree.isClickDiagnosis() == 2 && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 1) {
     this.screen = 8;
     this.patientsLevel3 = 2;
     diagnosisScreen.setNextScreen(7);
   }
 
-  if (patientThree.isClickDiagnosis() == 1 && this.book == false) {
+  //For patient 3 in level 3
+  if (patientThree.isClickDiagnosis() == 3 && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 2) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(9);
   }
