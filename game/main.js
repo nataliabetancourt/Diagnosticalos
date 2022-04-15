@@ -43,6 +43,7 @@ function setup() {
   level2 = loadImage('../images/level2.jpg');
   level3 = loadImage('../images/level3.jpg');
 
+  this.timeIt = false;
   
 }
 
@@ -55,23 +56,27 @@ function draw() {
     //Start screens
     case 0:
       introScreens.draw();
-      
+      /*patientOne.draw();
+      this.timer();*/
+      this.timeIt = false;
       break;
     //Symptoms screen
     case 1:
       symptomsScreen.draw();
+      this.timeIt = false;
       break;
     //Level 1 screen
     case 2:
       this.changeCounter++;
       image(level1, 0, 0, 1280, 720);
       this.book = false;
+      this.timeIt = false;
       break;
     //Patient on level 1
     case 3:
       //Doctors office
       patientOne.draw();
-      this.timer();
+      this.timeIt = true;
       //Book
       showBook();
       break;
@@ -80,6 +85,7 @@ function draw() {
       this.changeCounter2++;
       image(level2, 0, 0, 1280, 720);
       this.book = false;
+      this.timeIt = false;
       break;
     //Patients on level 2
     case 5:
@@ -99,7 +105,7 @@ function draw() {
       }
       //General things
       patientTwo.draw();
-      this.timer();
+      this.timeIt = false;
       //Book
       showBook();
       break;
@@ -108,7 +114,7 @@ function draw() {
       this.changeCounter3++;
       image(level3, 0, 0, 1280, 720);
       this.book = false;
-
+      this.timeIt = false;
       break;
     //Patients on level 3
     case 7:
@@ -127,13 +133,15 @@ function draw() {
 
       //General things
       patientThree.draw();
-      this.timer();
+      this.timeIt = false;
+      //this.timer();
       //Book
       showBook();
       break;
     //Diagnosis screen
     case 8: 
       diagnosisScreen.draw();
+      this.timeIt = false;
       break;
     //Final screen
     case 9:
@@ -155,12 +163,17 @@ function draw() {
     this.screen = 7;
   }
 
+  if(this.timeIt == true){
+    this.timer()
+  }
+
 }
 
 function timer() {
 
+  
   this.totalTime = millis(); //start timer
-  this.timeLimit = 3; //time limit 5min
+  this.timeLimit = 300; //time limit 5min
   this.gameTime; // amount of time playing
   this.end = false;
 
@@ -172,11 +185,9 @@ function timer() {
   textSize(18);
   text(convertSeconds(timeLimit - gameTime), 725, 85);
   
-  if ((timeLimit - gameTime) == 0) { //he rest of the code to end the timer
+  if ((timeLimit - gameTime) == 0) { 
     this.screen = 8;
-  
   }
-  
 }
 
 function convertSeconds(s) {
@@ -186,13 +197,10 @@ function convertSeconds(s) {
 }
 
 function timeIt() {
-  //gameTime = int( totalTime/ 1000); //convert to seconds and int
-  //gameTime = floor((millis() - timeLimit) / 1000);
-    text(convertSeconds(timeLimit - gameTime));
-    if (gameTime == timeLimit) {
-      clearInterval(interval);
-      //counter = 0;
-    }}
+
+  
+  
+}
 
 
 function mousePressed() {
