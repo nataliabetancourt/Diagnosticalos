@@ -5,6 +5,7 @@ let patientOne;
 let patientTwo;
 let patientThree;
 let diagnosisScreen;
+let resultsScreen;
 
 //Variables
 let screen;
@@ -12,6 +13,13 @@ let changeCounter, changeCounter2, changeCounter3;
 let patientsLevel2;
 let patientsLevel3;
 let score;
+
+//Score a partir de las respuestas
+let scoreAnswers = 0;
+let allowScore=true;
+let font;
+//
+
 let counter;
 let wtf;
 let nextScreen;
@@ -19,6 +27,11 @@ let intro;
 
 //Level images
 let level1, level2, level3;
+
+function preload(){
+  resultsScreen = new ResultsScreens();
+  resultsScreen.preload();
+}
 
 function setup() {
   createCanvas(1280, 720);
@@ -49,7 +62,6 @@ function setup() {
   level2 = loadImage('../images/level2.jpg');
   level3 = loadImage('../images/level3.jpg');
 
-  
 }
 
 function draw() {
@@ -175,6 +187,17 @@ function draw() {
       break;
     //Final screen
     case 9:
+
+    resultsScreen.draw();
+
+    if(allowScore){
+      addScore();
+      allowScore=false;
+    }
+
+    resultsScreen.drawResults(diagnosisScreen.getDiagnosis(), scoreAnswers);
+    
+
       break;
   }
 
@@ -240,6 +263,7 @@ function timeIt() {
 
 
 function mousePressed() {
+
   switch (this.screen) {
     //Start screens clicks
     //Symptoms screen clicks
@@ -293,6 +317,10 @@ function mousePressed() {
       break;
     case 8:
       diagnosisScreen.clicked();
+      break;
+
+    case 9:
+      resultsScreen.endActivity()
       break;
   }
 }
@@ -354,7 +382,6 @@ function diagnosisScreens(){
   if (diagnosisScreen.isAnswered()) {
     this.screen = diagnosisScreen.getNextScreen();
     patientOne.setClickDiagnosis(false);
-    console.log(this.screen);
   }
 
 }
@@ -386,5 +413,25 @@ function showBook(){
 }
 
 function addScore() {
+
+  let correctAnswers= [
+    "Vertigo",
+    "Faringitis",
+    "Sinusitis",
+    "Bronquitis",
+    "Infección de oído",
+    "Gastritis"
+  ]  
   
+  let diagnosisArray = diagnosisScreen.getDiagnosis();
+
+  for (let index = 0; index < diagnosisArray.length; index++) {
+    
+    if (diagnosisArray[index] === correctAnswers[index]) {
+      
+      scoreAnswers=scoreAnswers+10;
+
+    }
+  }
+
 }
