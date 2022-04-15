@@ -13,6 +13,9 @@ let patientsLevel2;
 let patientsLevel3;
 let score;
 let counter;
+let wtf;
+let nextScreen;
+let intro;
 
 //Level images
 let level1, level2, level3;
@@ -29,7 +32,7 @@ function setup() {
   diagnosisScreen = new DiagnosisScreen();
 
   //Variables
-  this.screen = 0;
+  this.screen = 1;
   this.changeCounter = 0;
   this.changeCounter2 = 0;
   this.changeCounter3 = 0;
@@ -37,6 +40,9 @@ function setup() {
   this.patientsLevel2 = 0;
   this.patientsLevel3 = 0;
   this.counter = 0;
+  this.wtf = false;
+  this.nextScreen = 4;
+  this.intro = 1;
 
   //Loading level images
   level1 = loadImage('../images/level1.jpg');
@@ -53,13 +59,16 @@ function draw() {
   //Switch between class screens
   switch (this.screen) {
     //Start screens
-    case 0:
-      introScreens.draw();
-      
-      break;
     //Symptoms screen
     case 1:
-      symptomsScreen.draw();
+      switch (this.intro) {
+        case 1:
+          introScreens.draw();
+          break;
+        case 2:     
+          symptomsScreen.draw();
+          break;
+      }
       break;
     //Level 1 screen
     case 2:
@@ -80,6 +89,11 @@ function draw() {
       this.changeCounter2++;
       image(level2, 0, 0, 1280, 720);
       this.book = false;
+
+      if (this.counter < 10) {
+        diagnosisScreen.setAnswered(false);
+        this.counter = 0;
+      }
       break;
     //Patients on level 2
     case 5:
@@ -114,6 +128,10 @@ function draw() {
       image(level3, 0, 0, 1280, 720);
       this.book = false;
 
+      if (this.counter < 10) {
+        diagnosisScreen.setAnswered(false);
+        this.counter = 0;
+      }
       break;
     //Patients on level 3
     case 7:
@@ -162,9 +180,16 @@ function draw() {
 
   //Check for changes in classes
   switchBetweenClasses();
-  levelScreens();
+  //levelScreens();
   diagnosisScreens();
   showBookPlay();
+
+  //Switch to next level after a couple of seconds
+  if (this.changeCounter > 100 && this.screen === 2 && this.wtf == false) {
+    this.screen = 3;
+    this.wtf = true;
+    symptomsScreen.setContinueClicked(false);
+  }
 
   if (this.changeCounter2 > 100 && this.screen === 4) {
     this.screen = 5;
@@ -178,7 +203,6 @@ function draw() {
 }
 
 function timer() {
-
   this.totalTime = millis(); //start timer
   this.timeLimit = 3; //time limit 5min
   this.gameTime; // amount of time playing
@@ -218,12 +242,16 @@ function timeIt() {
 function mousePressed() {
   switch (this.screen) {
     //Start screens clicks
-    case 0:
-      introScreens.clicked();
-      break;
     //Symptoms screen clicks
     case 1:
-      symptomsScreen.clicked();
+      switch (this.intro) {
+        case 1:
+          introScreens.clicked();
+          break;
+        case 2:     
+          symptomsScreen.clicked();
+          break;
+      }
       break;
     //Patient level 1
     case 3:
@@ -272,30 +300,22 @@ function mousePressed() {
 function switchBetweenClasses() {
   //Start screen to symptoms
   if (introScreens.isScreenClicked()) {
-    this.screen = 1;
+    this.intro = 2;
   }
 
   //Symptoms screen to level screen
   if (symptomsScreen.isContinueClicked()) {
     this.screen = 2;
   }
-
-}
-
-function levelScreens() {
-  //LEVEL SCREENS
-  //Switch to next level after a couple of seconds
-  if (this.changeCounter > 100 && this.screen === 2) {
-    this.screen = 3;
-  }
 }
 
 function diagnosisScreens(){
   //DIAGNOSIS FROM GAME
   //Make diagnosis during game
-  if (patientOne.isClickDiagnosis() && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 3) {
+  if (patientOne.isClickDiagnosis() >= 1 && this.book == false && this.screen === 3) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(4);
+    console.log("click");
   }
 
   //For patient 1 in level 2
@@ -333,7 +353,10 @@ function diagnosisScreens(){
   //Switch screens after diagnosis
   if (diagnosisScreen.isAnswered()) {
     this.screen = diagnosisScreen.getNextScreen();
+    patientOne.setClickDiagnosis(false);
+    console.log(this.screen);
   }
+
 }
 
 function showBookPlay() {
