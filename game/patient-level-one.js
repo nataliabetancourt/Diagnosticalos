@@ -29,7 +29,7 @@ class PatientLevelOne {
         this.firstClick = false;
         this.chosenQ;
         this.clickBook = false;
-        this.clickDiagnosis = false;
+        this.clickDiagnosis = 0;
         this.score = 0;
 
         //timer
@@ -100,13 +100,17 @@ class PatientLevelOne {
 
         ///When clicking on diagnosis button
         if (dist(mouseX, mouseY, 1205, 80) < 100) {
-            this.clickDiagnosis = true;
+            this.clickDiagnosis++;
         } 
 
         //When clicking on symptoms book
         if (dist(mouseX, mouseY, 1205, 200) < 100) {
             this.clickBook = true;
         }
+    }
+
+    setClickDiagnosis(click) {
+        this.clickDiagnosis = click;
     }
 
     isClickBook() {

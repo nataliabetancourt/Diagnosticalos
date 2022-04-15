@@ -135,6 +135,10 @@ class SymptomsScreen {
         return this.continueClicked;
     }
 
+    setContinueClicked(click) {
+        this.continueClicked = click;
+    }
+
     isCloseClicked() {
         return this.closeClicked;
     }

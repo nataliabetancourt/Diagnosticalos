@@ -5,6 +5,7 @@ let patientOne;
 let patientTwo;
 let patientThree;
 let diagnosisScreen;
+let resultsScreen;
 
 //Variables
 let screen;
@@ -13,10 +14,24 @@ let patientsLevel2;
 let patientsLevel3;
 let score;
 
+//Score a partir de las respuestas
+let scoreAnswers = 0;
+let allowScore=true;
+let font;
+//
 
+let counter;
+let wtf;
+let nextScreen;
+let intro;
 
 //Level images
 let level1, level2, level3;
+
+function preload(){
+  resultsScreen = new ResultsScreens();
+  resultsScreen.preload();
+}
 
 function setup() {
   createCanvas(1280, 720);
@@ -30,13 +45,17 @@ function setup() {
   diagnosisScreen = new DiagnosisScreen();
 
   //Variables
-  this.screen = 0;
+  this.screen = 1;
   this.changeCounter = 0;
   this.changeCounter2 = 0;
   this.changeCounter3 = 0;
   this.book = false;
   this.patientsLevel2 = 0;
   this.patientsLevel3 = 0;
+  this.counter = 0;
+  this.wtf = false;
+  this.nextScreen = 4;
+  this.intro = 1;
 
   //Loading level images
   level1 = loadImage('../images/level1.jpg');
@@ -58,25 +77,34 @@ function draw() {
       introScreens.draw();
       /*patientOne.draw();
       this.timer();*/
-      this.timeIt = false;
       break;
     //Symptoms screen
     case 1:
       symptomsScreen.draw();
-      this.timeIt = false;
+    //Symptoms screen
+    case 1:
+      switch (this.intro) {
+        case 1:
+          introScreens.draw();
+          break;
+        case 2:     
+          symptomsScreen.draw();
+          break;
+      }
       break;
     //Level 1 screen
     case 2:
       this.changeCounter++;
       image(level1, 0, 0, 1280, 720);
       this.book = false;
-      this.timeIt = false;
+
       break;
     //Patient on level 1
     case 3:
       //Doctors office
       patientOne.draw();
-      this.timeIt = true;
+     // this.timeIt = true;
+    this.timer();
       //Book
       showBook();
       break;
@@ -85,7 +113,11 @@ function draw() {
       this.changeCounter2++;
       image(level2, 0, 0, 1280, 720);
       this.book = false;
-      this.timeIt = false;
+
+      if (this.counter < 10) {
+        diagnosisScreen.setAnswered(false);
+        this.counter = 0;
+      }
       break;
     //Patients on level 2
     case 5:
@@ -93,19 +125,26 @@ function draw() {
       switch (this.patientsLevel2) {
         case 0:
           patientTwo.drawPatient1();
-          /*let counter = 0;
-          counter++;
-          if (counter < 10) {
+          this.counter++;
+          if (this.counter < 10) {
             diagnosisScreen.setAnswered(false);
-          }*/
+            this.counter = 0;
+          }
           break;
         case 1:
           patientTwo.drawPatient2();
+          this.counter++;
+          if (this.counter < 10) {
+            diagnosisScreen.setAnswered(false);
+            this.counter = 0;
+          }
           break;
       }
       //General things
       patientTwo.draw();
-      this.timeIt = false;
+      
+      //this.timer();
+      
       //Book
       showBook();
       break;
@@ -114,7 +153,13 @@ function draw() {
       this.changeCounter3++;
       image(level3, 0, 0, 1280, 720);
       this.book = false;
-      this.timeIt = false;
+      
+
+      if (this.counter < 10) {
+        diagnosisScreen.setAnswered(false);
+        this.counter = 0;
+      }
+      
       break;
     //Patients on level 3
     case 7:
@@ -122,18 +167,33 @@ function draw() {
       switch (this.patientsLevel3) {
         case 0:
           patientThree.drawPatient1();
+          this.counter++;
+          if (this.counter < 10) {
+            diagnosisScreen.setAnswered(false);
+            this.counter = 0;
+          }
           break;
         case 1:
           patientThree.drawPatient2();
+          this.counter++;
+          if (this.counter < 10) {
+            diagnosisScreen.setAnswered(false);
+            this.counter = 0;
+          }
           break;
         case 2:
           patientThree.drawPatient3();
+          this.counter++;
+          if (this.counter < 10) {
+            diagnosisScreen.setAnswered(false);
+            this.counter = 0;
+          }
           break;
       }
 
       //General things
       patientThree.draw();
-      this.timeIt = false;
+      
       //this.timer();
       //Book
       showBook();
@@ -141,18 +201,35 @@ function draw() {
     //Diagnosis screen
     case 8: 
       diagnosisScreen.draw();
-      this.timeIt = false;
       break;
     //Final screen
     case 9:
+
+    resultsScreen.draw();
+
+    if(allowScore){
+      addScore();
+      allowScore=false;
+    }
+
+    resultsScreen.drawResults(diagnosisScreen.getDiagnosis(), scoreAnswers);
+    
+
       break;
   }
 
   //Check for changes in classes
   switchBetweenClasses();
-  levelScreens();
+  //levelScreens();
   diagnosisScreens();
   showBookPlay();
+
+  //Switch to next level after a couple of seconds
+  if (this.changeCounter > 100 && this.screen === 2 && this.wtf == false) {
+    this.screen = 3;
+    this.wtf = true;
+    symptomsScreen.setContinueClicked(false);
+  }
 
   if (this.changeCounter2 > 100 && this.screen === 4) {
     this.screen = 5;
@@ -171,7 +248,6 @@ function draw() {
 
 function timer() {
 
-  
   this.totalTime = millis(); //start timer
   this.timeLimit = 300; //time limit 5min
   this.gameTime; // amount of time playing
@@ -188,6 +264,7 @@ function timer() {
   if ((timeLimit - gameTime) == 0) { 
     this.screen = 8;
   }
+
 }
 
 function convertSeconds(s) {
@@ -204,14 +281,19 @@ function timeIt() {
 
 
 function mousePressed() {
+
   switch (this.screen) {
     //Start screens clicks
-    case 0:
-      introScreens.clicked();
-      break;
     //Symptoms screen clicks
     case 1:
-      symptomsScreen.clicked();
+      switch (this.intro) {
+        case 1:
+          introScreens.clicked();
+          break;
+        case 2:     
+          symptomsScreen.clicked();
+          break;
+      }
       break;
     //Patient level 1
     case 3:
@@ -254,64 +336,62 @@ function mousePressed() {
     case 8:
       diagnosisScreen.clicked();
       break;
+
+    case 9:
+      resultsScreen.endActivity()
+      break;
   }
 }
 
 function switchBetweenClasses() {
   //Start screen to symptoms
   if (introScreens.isScreenClicked()) {
-    this.screen = 1;
+    this.intro = 2;
   }
 
   //Symptoms screen to level screen
   if (symptomsScreen.isContinueClicked()) {
     this.screen = 2;
   }
-
-}
-
-function levelScreens() {
-  //LEVEL SCREENS
-  //Switch to next level after a couple of seconds
-  if (this.changeCounter > 100 && this.screen === 2) {
-    this.screen = 3;
-  }
 }
 
 function diagnosisScreens(){
   //DIAGNOSIS FROM GAME
   //Make diagnosis during game
-  if (patientOne.isClickDiagnosis() && this.book == false) {
+  if (patientOne.isClickDiagnosis() >= 1 && this.book == false && this.screen === 3) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(4);
+    console.log("click");
   }
 
   //For patient 1 in level 2
-  if (patientTwo.isClickDiagnosis() == 1  && this.book == false && diagnosisScreen.isAnswered() == false) {
+  if (patientTwo.isClickDiagnosis() == 1  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 5 && this.patientsLevel2 == 0) {
     this.screen = 8;
     this.patientsLevel2 = 1;
     diagnosisScreen.setNextScreen(5);
   }
 
-  if (patientTwo.isClickDiagnosis() == 2  && this.book == false) {
+  if (patientTwo.isClickDiagnosis() == 2  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 5 && this.patientsLevel2 == 1) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(6);
   }
 
   //For patient 1 in level 3
-  if (patientThree.isClickDiagnosis() == 1 && this.book == false) {
+  if (patientThree.isClickDiagnosis() == 1 && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 0) {
     this.screen = 8;
     this.patientsLevel3 = 1;
     diagnosisScreen.setNextScreen(7);
   }
 
-  if (patientThree.isClickDiagnosis() == 1 && this.book == false) {
+  //For patient 2 in level 3
+  if (patientThree.isClickDiagnosis() == 2 && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 1) {
     this.screen = 8;
     this.patientsLevel3 = 2;
     diagnosisScreen.setNextScreen(7);
   }
 
-  if (patientThree.isClickDiagnosis() == 1 && this.book == false) {
+  //For patient 3 in level 3
+  if (patientThree.isClickDiagnosis() == 3 && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 2) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(9);
   }
@@ -319,7 +399,9 @@ function diagnosisScreens(){
   //Switch screens after diagnosis
   if (diagnosisScreen.isAnswered()) {
     this.screen = diagnosisScreen.getNextScreen();
+    patientOne.setClickDiagnosis(false);
   }
+
 }
 
 function showBookPlay() {
@@ -349,5 +431,25 @@ function showBook(){
 }
 
 function addScore() {
+
+  let correctAnswers= [
+    "Vertigo",
+    "Faringitis",
+    "Sinusitis",
+    "Bronquitis",
+    "Infección de oído",
+    "Gastritis"
+  ]  
   
+  let diagnosisArray = diagnosisScreen.getDiagnosis();
+
+  for (let index = 0; index < diagnosisArray.length; index++) {
+    
+    if (diagnosisArray[index] === correctAnswers[index]) {
+      
+      scoreAnswers=scoreAnswers+10;
+
+    }
+  }
+
 }
