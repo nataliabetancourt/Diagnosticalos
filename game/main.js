@@ -29,7 +29,7 @@ function setup() {
   diagnosisScreen = new DiagnosisScreen();
 
   //Variables
-  this.screen = 3;
+  this.screen = 0;
   this.changeCounter = 0;
   this.changeCounter2 = 0;
   this.changeCounter3 = 0;
