@@ -18,7 +18,15 @@ let score;
 let scoreAnswers = 0;
 let allowScore=true;
 let font;
-//
+
+//score a partir del diagnostico
+let questionScore;
+let Dscore = 0;
+
+let sumascore = false;
+
+//timer
+let timerLimit;
 
 let counter;
 let wtf;
@@ -62,7 +70,12 @@ function setup() {
   level2 = loadImage('../images/level2.jpg');
   level3 = loadImage('../images/level3.jpg');
 
-  this.timeIt = false;
+  //timer
+  this.timerLimit = 300;
+
+  this.scoreAnswers = 0;
+  this.Dscore = 0;
+  this.sumascore = false;
   
 }
 
@@ -97,14 +110,17 @@ function draw() {
       this.changeCounter++;
       image(level1, 0, 0, 1280, 720);
       this.book = false;
-
+      
       break;
     //Patient on level 1
     case 3:
       //Doctors office
       patientOne.draw();
-     // this.timeIt = true;
+     
     this.timer();
+    text(this.scoreAnswers);
+    this.questionScore = patientOne.getScore();
+    
       //Book
       showBook();
       break;
@@ -114,10 +130,20 @@ function draw() {
       image(level2, 0, 0, 1280, 720);
       this.book = false;
 
+      this.timerLimit = 300;
+
       if (this.counter < 10) {
         diagnosisScreen.setAnswered(false);
         this.counter = 0;
       }
+
+      if(this.sumascore == false){
+          this.Dscore =  this.Dscore + this.questionScore;
+          this.questionScore = 0;
+          this.sumascore = true;
+        };
+
+
       break;
     //Patients on level 2
     case 5:
@@ -143,7 +169,12 @@ function draw() {
       //General things
       patientTwo.draw();
       
-      //this.timer();
+      this.timer();
+
+      this.sumascore = false;
+      this.questionScore = patientTwo.getScore();
+      
+      //this.addScore();
       
       //Book
       showBook();
@@ -159,6 +190,13 @@ function draw() {
         diagnosisScreen.setAnswered(false);
         this.counter = 0;
       }
+
+      if(this.sumascore == false){
+        this.Dscore =  this.Dscore + this.questionScore;
+        this.questionScore = 0;
+        this.sumascore = true;
+      };
+
       
       break;
     //Patients on level 3
@@ -194,16 +232,26 @@ function draw() {
       //General things
       patientThree.draw();
       
-      //this.timer();
+      this.sumascore = false;
+      this.questionScore = patientThree.getScore();
+
+      this.timer();
       //Book
       showBook();
       break;
     //Diagnosis screen
     case 8: 
       diagnosisScreen.draw();
+      
       break;
     //Final screen
     case 9:
+
+      if(this.sumascore == false){
+        this.Dscore =  this.Dscore + this.questionScore;
+        this.questionScore = 0;
+        this.sumascore = true;
+      };
 
     resultsScreen.draw();
 
@@ -212,7 +260,7 @@ function draw() {
       allowScore=false;
     }
 
-    resultsScreen.drawResults(diagnosisScreen.getDiagnosis(), scoreAnswers);
+    resultsScreen.drawResults(diagnosisScreen.getDiagnosis(), this.Dscore);
     
 
       break;
@@ -224,6 +272,7 @@ function draw() {
   diagnosisScreens();
   showBookPlay();
 
+  console.log(this.Dscore);
   //Switch to next level after a couple of seconds
   if (this.changeCounter > 100 && this.screen === 2 && this.wtf == false) {
     this.screen = 3;
@@ -240,30 +289,33 @@ function draw() {
     this.screen = 7;
   }
 
-  if(this.timeIt == true){
-    this.timer()
+  if(this.screen == 3 && this.timeLimit <= 500){
+
+    this.timeLimit = 300;
+
   }
 
 }
 
 function timer() {
 
-  this.totalTime = millis(); //start timer
-  this.timeLimit = 300; //time limit 5min
-  this.gameTime; // amount of time playing
-  this.end = false;
 
-  gameTime = int(totalTime/ 1000); //convert to seconds and int
+  if (frameCount % 60 == 0 && this.timerLimit > 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
+    this.timerLimit --;
+    
+  }
+  if (this.timerLimit == 0) {
+    text("GAME OVER", width/2, height*0.7);
+  }
   
-  //interval = setInterval(timeIt, 1000);
 
   fill(72, 72, 72)
   textSize(18);
-  text(convertSeconds(timeLimit - gameTime), 725, 85);
-  
-  if ((timeLimit - gameTime) == 0) { 
+  text(convertSeconds(this.timerLimit), 725, 85);
+
+  /*if ((this.timeLimit - this.gameTime) == 0) { 
     this.screen = 8;
-  }
+  }*/
 
 }
 
@@ -271,12 +323,6 @@ function convertSeconds(s) {
   let min = floor(s / 60);
   let sec = s % 60;
   return nf(min, 2) + ':' + nf(sec, 2);
-}
-
-function timeIt() {
-
-  
-  
 }
 
 
@@ -325,7 +371,7 @@ function mousePressed() {
         case 1:
           patientThree.clickPatient2();
           break;
-        case 1:
+        case 2:
           patientThree.clickPatient3();
           break;
       }
@@ -400,6 +446,7 @@ function diagnosisScreens(){
   if (diagnosisScreen.isAnswered()) {
     this.screen = diagnosisScreen.getNextScreen();
     patientOne.setClickDiagnosis(false);
+   
   }
 
 }
@@ -444,12 +491,15 @@ function addScore() {
   let diagnosisArray = diagnosisScreen.getDiagnosis();
 
   for (let index = 0; index < diagnosisArray.length; index++) {
-    
+
     if (diagnosisArray[index] === correctAnswers[index]) {
       
+      this.Dscore = this.Dscore + 10;
       scoreAnswers=scoreAnswers+10;
 
     }
   }
 
 }
+
+

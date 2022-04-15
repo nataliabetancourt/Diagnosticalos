@@ -220,4 +220,8 @@ class PatientLevelThree {
     setClickDiagnosis(clickDiagnosis) {
         this.clickDiagnosis = clickDiagnosis;
     }
+
+    getScore(){
+        return this.score;
+    }
 }
