@@ -71,7 +71,7 @@ function setup() {
   level3 = loadImage('../images/level3.jpg');
 
   //timer
-  this.timerLimit = 300;
+  this.timerLimit = 100;
 
   this.scoreAnswers = 0;
   this.Dscore = 0;
@@ -80,6 +80,7 @@ function setup() {
 }
 
 function draw() {
+
   imageMode(CORNER);
   background(220);
 
@@ -130,7 +131,7 @@ function draw() {
       image(level2, 0, 0, 1280, 720);
       this.book = false;
 
-      this.timerLimit = 300;
+      this.timerLimit = 125;
 
       if (this.counter < 10) {
         diagnosisScreen.setAnswered(false);
@@ -168,7 +169,7 @@ function draw() {
       }
       //General things
       patientTwo.draw();
-      
+  
       this.timer();
 
       this.sumascore = false;
@@ -185,6 +186,7 @@ function draw() {
       image(level3, 0, 0, 1280, 720);
       this.book = false;
       
+      this.timerLimit = 175;
 
       if (this.counter < 10) {
         diagnosisScreen.setAnswered(false);
@@ -272,7 +274,7 @@ function draw() {
   diagnosisScreens();
   showBookPlay();
 
-  console.log(this.Dscore);
+  console.log(this.screen);
   //Switch to next level after a couple of seconds
   if (this.changeCounter > 100 && this.screen === 2 && this.wtf == false) {
     this.screen = 3;
@@ -289,33 +291,18 @@ function draw() {
     this.screen = 7;
   }
 
-  if(this.screen == 3 && this.timeLimit <= 500){
-
-    this.timeLimit = 300;
-
-  }
-
 }
 
 function timer() {
-
 
   if (frameCount % 60 == 0 && this.timerLimit > 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
     this.timerLimit --;
     
   }
-  if (this.timerLimit == 0) {
-    text("GAME OVER", width/2, height*0.7);
-  }
-  
 
   fill(72, 72, 72)
   textSize(18);
   text(convertSeconds(this.timerLimit), 725, 85);
-
-  /*if ((this.timeLimit - this.gameTime) == 0) { 
-    this.screen = 8;
-  }*/
 
 }
 
@@ -401,13 +388,16 @@ function switchBetweenClasses() {
   }
 }
 
-function diagnosisScreens(){
+function diagnosisScreens() {
   //DIAGNOSIS FROM GAME
   //Make diagnosis during game
   if (patientOne.isClickDiagnosis() >= 1 && this.book == false && this.screen === 3) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(4);
     console.log("click");
+  }else if (this.timerLimit == 0  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 3 ) {
+    this.screen = 8;
+    diagnosisScreen.setNextScreen(4);
   }
 
   //For patient 1 in level 2
@@ -415,9 +405,16 @@ function diagnosisScreens(){
     this.screen = 8;
     this.patientsLevel2 = 1;
     diagnosisScreen.setNextScreen(5);
+
+  }else if (this.timerLimit == 0  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 5 && this.patientsLevel2 == 0) {
+    this.screen = 8;
+    diagnosisScreen.setNextScreen(6);
   }
 
   if (patientTwo.isClickDiagnosis() == 2  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 5 && this.patientsLevel2 == 1) {
+    this.screen = 8;
+    diagnosisScreen.setNextScreen(6);
+  }else if (this.timerLimit == 0  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 5 && this.patientsLevel2 == 1) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(6);
   }
@@ -427,6 +424,9 @@ function diagnosisScreens(){
     this.screen = 8;
     this.patientsLevel3 = 1;
     diagnosisScreen.setNextScreen(7);
+  }else if (this.timerLimit == 0  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 0) {
+    this.screen = 8;
+    diagnosisScreen.setNextScreen(9);
   }
 
   //For patient 2 in level 3
@@ -434,10 +434,16 @@ function diagnosisScreens(){
     this.screen = 8;
     this.patientsLevel3 = 2;
     diagnosisScreen.setNextScreen(7);
+  }else if (this.timerLimit == 0  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 1) {
+    this.screen = 8;
+    diagnosisScreen.setNextScreen(9);
   }
 
   //For patient 3 in level 3
   if (patientThree.isClickDiagnosis() == 3 && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 2) {
+    this.screen = 8;
+    diagnosisScreen.setNextScreen(9);
+  }else if (this.timerLimit == 0  && this.book == false && !diagnosisScreen.isAnswered() && this.screen == 7 && this.patientsLevel3 == 2) {
     this.screen = 8;
     diagnosisScreen.setNextScreen(9);
   }
@@ -446,7 +452,7 @@ function diagnosisScreens(){
   if (diagnosisScreen.isAnswered()) {
     this.screen = diagnosisScreen.getNextScreen();
     patientOne.setClickDiagnosis(false);
-   
+    //this.timerLimit = 10;
   }
 
 }
